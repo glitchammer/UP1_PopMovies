@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     // list of movies - init empty list
     private List<Movie> movies = new ArrayList<Movie>();
+    private Context context;
 
 
     public MoviesAdapter(TheMovieDBClient movieDBClient) {
@@ -67,7 +70,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
         @Override
         protected void onPostExecute(List<Movie> movies) {
-
+            setMovies(movies);
         }
     }
 
@@ -75,7 +78,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
     @Override
     public MovieThumbnailVH onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Context context = parent.getContext();
+        this.context = parent.getContext();
         int layoutIdForListItem = R.layout.movie_thumbnail;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
@@ -107,6 +110,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
 
         public void bind(Movie movie) {
+            Picasso.with(context).load(movie.posterUrl.toString()).into(imgMovie);
         }
     }
 
