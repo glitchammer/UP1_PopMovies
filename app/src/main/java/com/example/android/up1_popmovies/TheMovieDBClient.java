@@ -54,9 +54,10 @@ public class TheMovieDBClient {
             e.printStackTrace();
         }
 
+        //
+        // read from the db - make that webservice call
+        //
         String searchResultsStr = IOUtils.toString(url.openStream());
-        Log.d(TAG, "searcb results:\n" + searchResultsStr);
-
 
         // init result list
         List<Movie> movies = new ArrayList<Movie>();
@@ -65,6 +66,8 @@ public class TheMovieDBClient {
         try {
             JSONObject pageOne = new JSONObject(searchResultsStr);
             JSONArray results = pageOne.getJSONArray("results");
+
+            Log.d(TAG, "no of results: " +results.length() );
 
             for (int i=0; i<results.length(); i++) {
                 JSONObject json = results.getJSONObject(i);

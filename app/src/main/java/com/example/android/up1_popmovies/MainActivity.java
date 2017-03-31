@@ -29,8 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView rvMovies = (RecyclerView) findViewById(R.id.rv_movies);
 
-//        rvMovies.setLayoutManager(new GridLayoutManager(this));
+        rvMovies.setLayoutManager(new GridLayoutManager(this, 3));
 
+        rvMovies.setAdapter(moviesAdapter);
 
 
     }
