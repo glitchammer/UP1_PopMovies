@@ -1,6 +1,7 @@
 package com.example.android.up1_popmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +23,7 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumbnailVH> {
 
     private static final String TAG = MoviesAdapter.class.getName();
+    private final MainActivity mainActivity;
 
     private TheMovieDBClient movieDBClient;
 
@@ -30,8 +32,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
     private Context context;
 
 
-    public MoviesAdapter(TheMovieDBClient movieDBClient) {
+    public MoviesAdapter(TheMovieDBClient movieDBClient, MainActivity mainActivity) {
         this.movieDBClient = movieDBClient;
+        this.mainActivity  = mainActivity;
         updateMovies();
     }
 
@@ -101,15 +104,29 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     public class MovieThumbnailVH extends RecyclerView.ViewHolder {
 
-        ImageView imgMovie;
+        private ImageView imgMovie;
+        private Movie movie;
 
         public MovieThumbnailVH(View itemView) {
             super(itemView);
             imgMovie = (ImageView) itemView.findViewById(R.id.img_movie);
+
+            imgMovie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent displayMovieDetails = new Intent(mainActivity, DisplayMovieDetailsActivity.class);
+                    displayMovieDetails.putExtra("id", movie.id);
+                    mainActivity.startActivity(displayMovieDetails);
+                }
+            });
+
+
         }
 
 
         public void bind(Movie movie) {
+            this.movie = movie;
             Picasso.with(context).load(movie.posterUrl.toString()).into(imgMovie);
         }
     }

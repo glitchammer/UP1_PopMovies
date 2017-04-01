@@ -72,8 +72,7 @@ public class TheMovieDBClient {
             for (int i=0; i<results.length(); i++) {
                 JSONObject json = results.getJSONObject(i);
 
-                Movie movie = new Movie();
-                movie.id            = json.getLong("id");
+                Movie movie = new Movie(json.getLong("id"));
                 movie.title         = json.getString("original_title");
                 movie.releaseDate   = json.getString("release_date");
                 movie.plotSynopsis  = json.getString("overview");

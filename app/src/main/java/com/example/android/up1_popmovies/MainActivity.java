@@ -25,14 +25,14 @@ public class MainActivity extends AppCompatActivity {
 
         TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY);
 
-        MoviesAdapter moviesAdapter = new MoviesAdapter(movieDBClient);
+        // TODO: 01/04/2017: clarify, I don't want to pass the activity "back reference" spaghetti code...
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movieDBClient, this);
 
         RecyclerView rvMovies = (RecyclerView) findViewById(R.id.rv_movies);
 
         rvMovies.setLayoutManager(new GridLayoutManager(this, 3));
 
         rvMovies.setAdapter(moviesAdapter);
-
 
     }
 }
