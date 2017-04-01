@@ -1,5 +1,7 @@
 package com.example.android.up1_popmovies;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
@@ -22,26 +24,27 @@ public class TheMovieDBClient {
 
     private static final String TAG = TheMovieDBClient.class.getName();
 
-
     public static final String SORT_POPULARITY_DESC   = "popularity.desc";
     public static final String SORT_VOTE_AVERAGE_DESC = "vote_average.desc";
+    private final ConnectivityManager connectivityManager;
 
 
     private String BASE_URI = "https://api.themoviedb.org/3/discover/movie";
 
     private String API_KEY;
 
-    public TheMovieDBClient(String API_KEY) {
+    public TheMovieDBClient(String API_KEY, ConnectivityManager connectivityManager) {
         this.API_KEY = API_KEY;
+        this.connectivityManager = connectivityManager;
     }
 
 
-    public List<Movie> getTopMovies(String sort) throws IOException {
+    public List<Movie> getTopMovies(String sortBy) throws IOException {
 
         // build up query URI
         Uri prepareURI = Uri.parse(BASE_URI).buildUpon()
                 .appendQueryParameter("api_key", API_KEY)
-                .appendQueryParameter("sort_by", sort)
+                .appendQueryParameter("sort_by", sortBy)
                 .build();
 
 
@@ -52,6 +55,10 @@ public class TheMovieDBClient {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
+        // check internet connection first
+        //TODO for some reason this isOnline() method returns wrong results - even though it's supposed to be right practice, no?
+        if (!isOnline()) throw new IOException("No internet connection");
 
         //
         // read from the db - make that webservice call
@@ -92,7 +99,10 @@ public class TheMovieDBClient {
     }
 
 
-
+    public boolean isOnline() {
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
 
 

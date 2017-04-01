@@ -13,6 +13,7 @@ public class Movie {
 
     public final long id;
 
+    //todo dear reviewers, i wanted to keep this simple POJO light-weight. do we always need getters and setters? I'm tired of it, isn't that oldschool practice? I come across this style more and more often
     protected String title;
     protected String releaseDate;
     protected String plotSynopsis;

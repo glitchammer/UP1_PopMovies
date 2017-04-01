@@ -1,6 +1,7 @@
 package com.example.android.up1_popmovies;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,9 +14,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
-
     /**  replace with your own theMovieDB.org API key  */
-    public static final String API_KEY = "ce73a701c02ec5881c476758e26f5169";
+    public static final String API_KEY = "TO_BE_REPLACED";
+
     private MoviesAdapter moviesAdapter;
 
 
@@ -24,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY);
+        TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
 
         // TODO: 01/04/2017: clarify, I don't want to pass the activity "back reference" spaghetti code...
         moviesAdapter = new MoviesAdapter(movieDBClient, this);
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             moviesAdapter.loadMoviesMostPopular();
             return true;
         }
-        if (itemThatWasClickedId == R.id.action_topHighestRated) {
+        else if (itemThatWasClickedId == R.id.action_topHighestRated) {
             Context context = MainActivity.this;
             String textToShow = "Load highest rated movies";
             Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
