@@ -26,29 +26,40 @@
             android:id="@+id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:text="Movie Title"
-            android:textAlignment="center"
-            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            android:textAppearance="@android:style/TextAppearance.Large" />
 
-        <TextView
-            android:id="@+id/txtReleaseDate"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="release date"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            />
+            <TextView
+                android:id="@+id/txtRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="rating"
+                android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/txtRating"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="rating" />
+            <TextView
+                android:id="@+id/txtReleaseDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:text="release date"
+                android:textAlignment="center" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/txtSynopsis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="rating" />
+            android:padding="10dp"
+            android:text="synopsis"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
 
     </LinearLayout>
 

@@ -29,7 +29,7 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity {
 
         txtTitle.setText(movie.title);
         txtReleaseDate.setText(movie.releaseDate);
-        txtRating.setText(String.format("%.1f / 10, %d votes in totoal", movie.voteAvg, movie.voteCount));
+        txtRating.setText(String.format("%.1f/10 (%d votes)", movie.voteAvg, movie.voteCount));
         txtSynopsis.setText(movie.plotSynopsis);
 
     }
