@@ -42,7 +42,7 @@ public class TheMovieDBClient {
         // build up query URI
         Uri prepareURI = Uri.parse(BASE_URI).buildUpon()
                 .appendQueryParameter("api_key", API_KEY)
-                .appendQueryParameter("sort", sort)
+                .appendQueryParameter("sort_by", sort)
                 .build();
 
 

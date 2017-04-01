@@ -35,11 +35,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
     public MoviesAdapter(TheMovieDBClient movieDBClient, MainActivity mainActivity) {
         this.movieDBClient = movieDBClient;
         this.mainActivity  = mainActivity;
-        updateMovies();
+        loadMoviesMostPopular();
     }
 
-    public void updateMovies() {
+    public void loadMoviesMostPopular() {
+        setMovies(new ArrayList<Movie>());
         new LoadMoviesTask().execute(TheMovieDBClient.SORT_POPULARITY_DESC);
+    }
+
+    public void loadMoviesHighestRated() {
+        setMovies(new ArrayList<Movie>());
+        new LoadMoviesTask().execute(TheMovieDBClient.SORT_VOTE_AVERAGE_DESC);
     }
 
     public void setMovies(List<Movie> movies) {
