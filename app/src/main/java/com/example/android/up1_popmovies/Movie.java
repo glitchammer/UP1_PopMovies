@@ -20,6 +20,7 @@ public class Movie {
     protected double voteAvg;
     protected int   voteCount;
 
+    protected URL thumbnailUrl;
     protected URL posterUrl;
 
     public Movie(long id) {

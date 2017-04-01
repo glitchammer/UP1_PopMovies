@@ -1,7 +1,6 @@
 package com.example.android.up1_popmovies;
 
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
@@ -78,7 +77,8 @@ public class TheMovieDBClient {
                 movie.plotSynopsis  = json.getString("overview");
                 movie.voteAvg       = json.getDouble("vote_average");
                 movie.voteCount     = json.getInt("vote_count");
-                movie.posterUrl     = new URL("http://image.tmdb.org/t/p/w185" + json.getString("poster_path"));
+                movie.thumbnailUrl  = new URL("http://image.tmdb.org/t/p/w185"     + json.getString("poster_path"));
+                movie.posterUrl     = new URL("http://image.tmdb.org/t/p/w500" + json.getString("poster_path"));
 
                 movies.add(movie);
             }
