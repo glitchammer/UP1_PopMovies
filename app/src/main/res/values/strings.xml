@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">UP1_PopMovies</string>
+
+    <string name="settings">Settings</string>
+    <string name="topMostPopular">Most Popular</string>
+    <string name="topHighestRated">Highest Rated</string>
+
 </resources>
