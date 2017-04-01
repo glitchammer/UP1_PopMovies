@@ -77,7 +77,7 @@ public class TheMovieDBClient {
                 movie.plotSynopsis  = json.getString("overview");
                 movie.voteAvg       = json.getDouble("vote_average");
                 movie.voteCount     = json.getInt("vote_count");
-                movie.thumbnailUrl  = new URL("http://image.tmdb.org/t/p/w185"     + json.getString("poster_path"));
+                movie.thumbnailUrl  = new URL("http://image.tmdb.org/t/p/w500"     + json.getString("poster_path"));
                 movie.posterUrl     = new URL("http://image.tmdb.org/t/p/w500" + json.getString("poster_path"));
 
                 movies.add(movie);
