@@ -32,7 +32,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     // list of movies - init empty list
     private List<Movie> movies = new ArrayList<Movie>();
-    private Context context;
 
 
     public MoviesAdapter(TheMovieDBClient movieDBClient, MainActivity mainActivity) {
@@ -61,6 +60,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     public class LoadMoviesTask extends AsyncTask<String, Void, List<Movie>> {
 
+        private boolean exceptionOccurred = false;
+
         @Override
         protected List<Movie> doInBackground(String... params) {
 
@@ -72,11 +73,20 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
                 movies = movieDBClient.getTopMovies(sortBy);
 
             } catch (IOException e) {
-
                 Log.e(TAG, "failed to connect to themoviedb.org", e);
+                exceptionOccurred = true;
 
-                //TODO this code does not work. it crashes, and i don't know why. need some advice here
-                new AlertDialog.Builder(context)
+            }
+
+            return movies;
+        }
+
+        @Override
+        protected void onPostExecute(List<Movie> movies) {
+            setMovies(movies);
+
+            if (exceptionOccurred) {
+                new AlertDialog.Builder(mainActivity)
                         .setTitle("No Connection to theMovieDB.org")
                         .setMessage("Cannot load movie data. Please check your internet connection.")
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -86,19 +96,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
                             public void onClick(DialogInterface dialog, int which)
                             {
                                 //tv.setText(input.getEditableText().toString());
-                                Toast.makeText(context, "Cannot connect to theMovieDB.org", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mainActivity, "Cannot connect to theMovieDB.org", Toast.LENGTH_LONG).show();
                             }
                         })
                         .show();
             }
-
-            return movies;
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> movies) {
-            // this is somewhat awkward, I would prefer to put this line in the method above, so we can spare the onPostExecute()
-            setMovies(movies);
         }
 
     }
@@ -107,7 +109,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
     @Override
     public MovieThumbnailVH onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        this.context = parent.getContext();
+        Context context = parent.getContext();
         int layoutIdForListItem = R.layout.movie_thumbnail;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
@@ -150,7 +152,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
         public void bind(Movie movie) {
             this.movie = movie;
-            Picasso.with(context)
+            Picasso.with(mainActivity)
                     .load(movie.thumbnailUrl)
                     .placeholder(R.drawable.poster_placeholder)
                     .error(R.drawable.poster_missing)
