@@ -147,7 +147,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
         public void bind(Movie movie) {
             this.movie = movie;
-            Picasso.with(context).load(movie.thumbnailUrl.toString()).into(imgMovie);
+            Picasso.with(context)
+                    .load(movie.thumbnailUrl.toString())
+                    .placeholder(R.drawable.poster_placeholder)
+                    .error(R.drawable.poster_missing)
+                    .into(imgMovie);
         }
     }
 

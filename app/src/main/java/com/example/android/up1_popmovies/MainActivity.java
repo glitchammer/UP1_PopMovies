@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
 
     /**  replace with your own theMovieDB.org API key  */
-    public static final String API_KEY = "TO_BE_REPLACED";
+    public static final String API_KEY = "ce73a701c02ec5881c476758e26f5169";
 
     private MoviesAdapter moviesAdapter;
 
@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
 
-        // TODO: 01/04/2017: clarify, I don't want to pass the activity "back reference" spaghetti code...
         moviesAdapter = new MoviesAdapter(movieDBClient, this);
 
         RecyclerView rvMovies = (RecyclerView) findViewById(R.id.rv_movies);
