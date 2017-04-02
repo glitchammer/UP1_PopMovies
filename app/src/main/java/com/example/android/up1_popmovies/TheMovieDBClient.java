@@ -24,12 +24,12 @@ public class TheMovieDBClient {
 
     private static final String TAG = TheMovieDBClient.class.getName();
 
-    public static final String SORT_POPULARITY_DESC   = "popularity.desc";
-    public static final String SORT_VOTE_AVERAGE_DESC = "vote_average.desc";
+    public static final String MOST_POPULAR  = "/movie/popular";
+    public static final String HIGHEST_RATED = "/movie/top_rated";
     private final ConnectivityManager connectivityManager;
 
 
-    private String BASE_URI = "https://api.themoviedb.org/3/discover/movie";
+    private String BASE_URI = "https://api.themoviedb.org/3";
 
     private String API_KEY;
 
@@ -39,12 +39,11 @@ public class TheMovieDBClient {
     }
 
 
-    public List<Movie> getTopMovies(String sortBy) throws IOException {
+    public List<Movie> getTopMovies(String modePath) throws IOException {
 
         // build up query URI
-        Uri prepareURI = Uri.parse(BASE_URI).buildUpon()
+        Uri prepareURI = Uri.parse(BASE_URI + modePath).buildUpon()
                 .appendQueryParameter("api_key", API_KEY)
-                .appendQueryParameter("sort_by", sortBy)
                 .build();
 
 
