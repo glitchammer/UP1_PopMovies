@@ -8,7 +8,17 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DisplayMovieDetailsActivity extends AppCompatActivity {
+
+    @BindView(R.id.imgMoviePoster) ImageView imgMoviePoster;
+    @BindView(R.id.txtTitle)       TextView txtTitle;
+    @BindView(R.id.txtReleaseDate) TextView txtReleaseDate;
+    @BindView(R.id.txtRating)      TextView txtRating;
+    @BindView(R.id.txtSynopsis)    TextView txtSynopsis;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,11 +29,7 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity {
         long movieID  = intent.getExtras().getLong("id");
         Movie movie   = Movie.MOVIES_CACHE.get(movieID);
 
-        ImageView imgMoviePoster = (ImageView) findViewById(R.id.imgMoviePoster);
-        TextView txtTitle        = (TextView)  findViewById(R.id.txtTitle);
-        TextView txtReleaseDate  = (TextView)  findViewById(R.id.txtReleaseDate);
-        TextView txtRating       = (TextView)  findViewById(R.id.txtRating);
-        TextView txtSynopsis     = (TextView)  findViewById(R.id.txtSynopsis);
+        ButterKnife.bind(this);
 
         Picasso.with(this).load(movie.posterUrl.toString()).into(imgMoviePoster);
 

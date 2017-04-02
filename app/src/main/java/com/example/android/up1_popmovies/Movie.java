@@ -1,5 +1,8 @@
 package com.example.android.up1_popmovies;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.net.URL;
 import java.util.HashMap;
 
@@ -28,7 +31,5 @@ public class Movie {
         this.id = id;
         MOVIES_CACHE.put(id, this);
     }
-
-
 
 }

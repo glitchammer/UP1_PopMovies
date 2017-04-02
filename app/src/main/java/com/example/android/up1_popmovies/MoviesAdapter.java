@@ -56,6 +56,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
         notifyDataSetChanged();
     }
 
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
     public class LoadMoviesTask extends AsyncTask<String, Void, List<Movie>> {
 
         @Override
