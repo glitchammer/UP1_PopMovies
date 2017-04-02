@@ -38,7 +38,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
     public MoviesAdapter(TheMovieDBClient movieDBClient, MainActivity mainActivity) {
         this.movieDBClient = movieDBClient;
         this.mainActivity  = mainActivity;
-        loadMoviesMostPopular();
     }
 
     public void loadMoviesMostPopular() {
@@ -152,7 +151,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
         public void bind(Movie movie) {
             this.movie = movie;
             Picasso.with(context)
-                    .load(movie.thumbnailUrl.toString())
+                    .load(movie.thumbnailUrl)
                     .placeholder(R.drawable.poster_placeholder)
                     .error(R.drawable.poster_missing)
                     .into(imgMovie);

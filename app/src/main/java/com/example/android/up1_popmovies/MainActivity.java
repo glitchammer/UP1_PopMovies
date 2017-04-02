@@ -12,13 +12,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
     /**  replace with your own theMovieDB.org API key  */
-    public static final String API_KEY = "ce73a701c02ec5881c476758e26f5169";
+    public static final String API_KEY    = "ce73a701c02ec5881c476758e26f5169";
+
+    private static final String MOVIE_KEY = "CURRENT_LIST_OF_MOVIES";
 
     private MoviesAdapter moviesAdapter;
 
@@ -31,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
         TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
 
         moviesAdapter = new MoviesAdapter(movieDBClient, this);
+        if (savedInstanceState != null)
+        {
+            List<Movie> listOfMovies = (List<Movie>) savedInstanceState.get(MOVIE_KEY);
+            moviesAdapter.setMovies(listOfMovies);
+        } else {
+            moviesAdapter.loadMoviesMostPopular();
+        }
 
         RecyclerView rvMovies = (RecyclerView) findViewById(R.id.rv_movies);
 
@@ -69,11 +79,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        //NOTE: the previous reviewer bounced my submission because I did not implement this.
-        // This was explicitly marked as "not a necessity", because we have not been introduced to this yet.
-        // I tried, but I feel too insecure about it, and I do not want to hack this somehow.
-        // please do not fail my project again. Leave it for stage 2, I expect course material in this regard.
-
+        outState.putParcelableArrayList(MOVIE_KEY, (ArrayList<? extends Parcelable>) moviesAdapter.getMovies());
     }
 }

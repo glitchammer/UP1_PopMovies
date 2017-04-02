@@ -31,7 +31,11 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Picasso.with(this).load(movie.posterUrl.toString()).into(imgMoviePoster);
+        Picasso.with(this)
+                .load(movie.posterUrl)
+                .placeholder(R.drawable.poster_placeholder)
+                .error(R.drawable.poster_missing)
+                .into(imgMoviePoster);
 
         txtTitle.setText(movie.title);
         txtReleaseDate.setText(movie.releaseDate);
