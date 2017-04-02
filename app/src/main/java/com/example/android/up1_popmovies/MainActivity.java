@@ -3,6 +3,7 @@ package com.example.android.up1_popmovies;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Parcelable;
+import com.example.android.up1_popmovies.BuildConfig;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,8 +19,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
-    /**  replace with your own theMovieDB.org API key  */
-    public static final String API_KEY    = "ce73a701c02ec5881c476758e26f5169";
+    /**
+     * please declare your own theMovieDB.org API key in your local gradle.properties file as
+     * THE_MOVIE_DB_API_KEY="<your key>"
+     * This concept was derived from http://stackoverflow.com/questions/33134031/is-there-a-safe-way-to-manage-api-keys/34021467#34021467
+     */
+    public static final String API_KEY    = BuildConfig.THE_MOVIE_DB_API_KEY;
 
     private static final String MOVIE_KEY = "CURRENT_LIST_OF_MOVIES";
 
