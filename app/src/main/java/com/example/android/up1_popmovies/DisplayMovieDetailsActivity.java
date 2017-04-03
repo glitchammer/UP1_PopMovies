@@ -26,6 +26,12 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_movie_details);
 
         Intent intent = getIntent();
+
+        // this was suggested by a reviewer.
+        // it does not help a thing actually, because when intent or extras are not given, my app does not work
+        // can't do magic here. what do you prefer? empty screen or a crashing app? .... this belongs to the field of philosophies i guess.
+        if (intent==null || intent.getExtras()==null) return;
+
         long movieID  = intent.getExtras().getLong("id");
         Movie movie   = Movie.MOVIES_CACHE.get(movieID);
 
