@@ -1,9 +1,8 @@
-package com.example.android.up1_popmovies;
+package es.glitch.and.bugs.popmovies;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Parcelable;
-import com.example.android.up1_popmovies.BuildConfig;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;

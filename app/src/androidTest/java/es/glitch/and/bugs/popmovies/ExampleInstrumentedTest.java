@@ -1,4 +1,4 @@
-package com.example.android.up1_popmovies;
+package es.glitch.and.bugs.popmovies;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

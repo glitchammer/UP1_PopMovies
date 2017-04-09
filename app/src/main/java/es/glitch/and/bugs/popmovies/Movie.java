@@ -1,9 +1,8 @@
-package com.example.android.up1_popmovies;
+package es.glitch.and.bugs.popmovies;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.net.URL;
 import java.util.HashMap;
 
 /**
