@@ -38,12 +38,12 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 "); ";
 
         // COMPLETED (7) Execute the query by calling execSQL on sqLiteDatabase and pass the string query SQL_CREATE_WAITLIST_TABLE
-        sqLiteDatabase.execSQL(SQL_CREATE_MOVIES_TABLE);
+        db.execSQL(SQL_CREATE_MOVIES_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MoviesEntry.TABLE_NAME);
-        onCreate(sqLiteDatabase);
+        db.execSQL("DROP TABLE IF EXISTS " + MoviesEntry.TABLE_NAME);
+        onCreate(db);
     }
 }
