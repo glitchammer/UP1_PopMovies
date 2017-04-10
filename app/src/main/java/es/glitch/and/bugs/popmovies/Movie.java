@@ -26,6 +26,8 @@ public class Movie implements Parcelable {
     protected String thumbnailUrl;
     protected String posterUrl;
 
+    protected boolean isFavorite = false;
+
     public Movie(long id) {
         this.id = id;
         MOVIES_CACHE.put(id, this);
