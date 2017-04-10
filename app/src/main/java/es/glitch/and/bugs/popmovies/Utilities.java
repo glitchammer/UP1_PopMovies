@@ -1,7 +1,10 @@
 package es.glitch.and.bugs.popmovies;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import java.io.ByteArrayOutputStream;
 
@@ -20,6 +23,12 @@ public class Utilities {
     public static Bitmap getImage(byte[] image)
     {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
+    }
+
+    public static boolean isOnline(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 }

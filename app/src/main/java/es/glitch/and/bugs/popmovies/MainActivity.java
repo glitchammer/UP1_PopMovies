@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
+        TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY, this);
 
         moviesAdapter = new MoviesAdapter(movieDBClient, this);
         if (savedInstanceState != null)

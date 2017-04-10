@@ -1,5 +1,6 @@
 package es.glitch.and.bugs.popmovies;
 
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -26,16 +27,16 @@ public class TheMovieDBClient {
 
     public static final String MOST_POPULAR  = "/movie/popular";
     public static final String HIGHEST_RATED = "/movie/top_rated";
-    private final ConnectivityManager connectivityManager;
+    private final Context context;
 
 
     private String BASE_URI = "https://api.themoviedb.org/3";
 
     private String API_KEY;
 
-    public TheMovieDBClient(String API_KEY, ConnectivityManager connectivityManager) {
+    public TheMovieDBClient(String API_KEY, Context context) {
         this.API_KEY = API_KEY;
-        this.connectivityManager = connectivityManager;
+        this.context = context;
     }
 
 
@@ -57,7 +58,7 @@ public class TheMovieDBClient {
 
         // check internet connection first
         //TODO for some reason this isOnline() method returns wrong results - even though it's supposed to be right practice, no?
-        if (!isOnline()) throw new IOException("No internet connection");
+        if (!Utilities.isOnline(context)) throw new IOException("No internet connection");
 
         //
         // read from the db - make that webservice call
@@ -96,14 +97,6 @@ public class TheMovieDBClient {
 
         return movies;
     }
-
-
-    public boolean isOnline() {
-        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
-
 
 
 }
