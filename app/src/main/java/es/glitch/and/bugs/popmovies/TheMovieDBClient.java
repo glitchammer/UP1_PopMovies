@@ -40,11 +40,12 @@ public class TheMovieDBClient {
     }
 
 
-    public List<Movie> getTopMovies(String modePath) throws IOException {
+    public List<Movie> getTopMovies(String modePath, int pageIndex) throws IOException {
 
         // build up query URI
         Uri prepareURI = Uri.parse(BASE_URI + modePath).buildUpon()
                 .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter("page", Integer.toString(pageIndex))
                 .build();
 
 

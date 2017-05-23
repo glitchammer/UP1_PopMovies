@@ -16,17 +16,19 @@ public class Movie implements Parcelable {
     public final long id;
 
     //todo dear reviewers, i wanted to keep this simple POJO light-weight. do we always need getters and setters? I'm tired of it, isn't that oldschool practice? I come across this style more and more often
-    protected String title;
-    protected String releaseDate;
-    protected String plotSynopsis;
+    public String title;
+    public String releaseDate;
+    public String plotSynopsis;
 
-    protected double voteAvg;
-    protected int voteCount;
+    public double voteAvg;
+    public int voteCount;
 
-    protected String thumbnailUrl;
-    protected String posterUrl;
+    public String thumbnailUrl;
+    public String posterUrl;
 
     protected boolean isFavorite = false;
+    public byte[] imgDataThumbnail;
+    public byte[] imgDataPoster;
 
     public Movie(long id) {
         this.id = id;

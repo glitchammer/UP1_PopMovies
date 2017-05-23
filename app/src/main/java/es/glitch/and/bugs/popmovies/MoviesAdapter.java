@@ -32,6 +32,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     // list of movies - init empty list
     private List<Movie> movies = new ArrayList<Movie>();
+    private int pageIndex = 1;
+
+    private String mode;
+    private boolean isLoading;
 
 
     public MoviesAdapter(TheMovieDBClient movieDBClient, MainActivity mainActivity) {
@@ -40,22 +44,43 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
     }
 
     public void loadMoviesMostPopular() {
+        setLoading(true);
         setMovies(new ArrayList<Movie>());
-        new LoadMoviesTask().execute(TheMovieDBClient.MOST_POPULAR);
+        mode = TheMovieDBClient.MOST_POPULAR;
+        new LoadMoviesTask().execute(mode, String.valueOf(pageIndex));
     }
 
     public void loadMoviesHighestRated() {
+        setLoading(true);
         setMovies(new ArrayList<Movie>());
-        new LoadMoviesTask().execute(TheMovieDBClient.HIGHEST_RATED);
+        mode = TheMovieDBClient.HIGHEST_RATED;
+        new LoadMoviesTask().execute(mode, String.valueOf(pageIndex));
     }
+
+    public void loadMoreMovies() {
+        setLoading(true);
+        pageIndex++;
+        new LoadMoviesTask().execute(mode, String.valueOf(pageIndex));
+    }
+
+
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
+        this.pageIndex = 1;
         notifyDataSetChanged();
     }
 
     public List<Movie> getMovies() {
         return movies;
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean isLoading) {
+        this.isLoading = isLoading;
     }
 
     public class LoadMoviesTask extends AsyncTask<String, Void, List<Movie>> {
@@ -66,11 +91,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
         protected List<Movie> doInBackground(String... params) {
 
             String sortBy = params[0];
+            int pageIndex = Integer.parseInt(params[1]);
 
             List<Movie> movies = new ArrayList<Movie>();
 
             try {
-                movies = movieDBClient.getTopMovies(sortBy);
+                movies = movieDBClient.getTopMovies(sortBy, pageIndex);
 
             } catch (IOException e) {
                 Log.e(TAG, "failed to connect to themoviedb.org", e);
@@ -82,8 +108,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
         }
 
         @Override
-        protected void onPostExecute(List<Movie> movies) {
-            setMovies(movies);
+        protected void onPostExecute(List<Movie> moviesToBeAppended) {
+
+            List<Movie> currentMovies = getMovies();
+            currentMovies.addAll(moviesToBeAppended);
+            setMovies(currentMovies);
+
+            setLoading(false);
 
             if (exceptionOccurred) {
                 new AlertDialog.Builder(mainActivity)
