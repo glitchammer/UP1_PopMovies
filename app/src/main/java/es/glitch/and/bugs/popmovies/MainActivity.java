@@ -130,5 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 makeSceneTransitionAnimation(this, imgMovie, "moviePoster");
         startActivity(displayMovieDetails, options.toBundle());
 
+//        Intent displayMovieDetails = new Intent(this, ScrollingActivity.class);
+//        startActivity(displayMovieDetails);
+
     }
 }

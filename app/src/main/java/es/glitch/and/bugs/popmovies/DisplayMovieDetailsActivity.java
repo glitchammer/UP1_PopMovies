@@ -1,13 +1,16 @@
 package es.glitch.and.bugs.popmovies;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -15,8 +18,12 @@ import butterknife.ButterKnife;
 
 public class DisplayMovieDetailsActivity extends AppCompatActivity {
 
+
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout appBarLayout;
+
     @BindView(R.id.imgMoviePoster) ImageView imgMoviePoster;
-    @BindView(R.id.imgAddFavorite) ImageView imgAddFavorite;
     @BindView(R.id.txtTitle)       TextView txtTitle;
     @BindView(R.id.txtReleaseDate) TextView txtReleaseDate;
     @BindView(R.id.txtRating)      TextView txtRating;
@@ -47,28 +54,62 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity {
                 .load(movie.posterUrl)
                 .placeholder(R.drawable.poster_placeholder)
                 .error(R.drawable.poster_missing)
-                .into(imgMoviePoster);
+                .into(imgMoviePoster, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        appBarLayout.setBackground(imgMoviePoster.getDrawable());
+                    }
+                    @Override
+                    public void onError() {
+                        // ignore
+                    }
+                });
+//        imgMoviePoster.setImageBitmap(ImageUtils.getImage(movie.imgDataThumbnail));
+
+        toolbar.setTitle(movie.title);
+//        toolbar.setBackground();
+        setSupportActionBar(toolbar);
 
         txtTitle.setText(movie.title);
         txtReleaseDate.setText(movie.releaseDate);
         txtRating.setText(String.format("%.1f/10 (%d votes)", movie.voteAvg, movie.voteCount));
         txtSynopsis.setText(movie.plotSynopsis);
-        updateImgAddFavorite();
-
-        // control
-        imgAddFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // toggle fav
-                movie.isFavorite = !movie.isFavorite;
-                updateImgAddFavorite();
-            }
-        });
 
     }
 
-    private void updateImgAddFavorite() {
-        int img = movie.isFavorite? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp;
-        imgAddFavorite.setImageResource(img);
+    private void updateFavorite(MenuItem item) {
+        int img = movie.isFavorite? R.drawable.ic_favorite_white_24dp : R.drawable.ic_favorite_border_white_24dp;
+        item.setIcon(img);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_movie_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        updateFavorite(menu.findItem(R.id.toggleFavorite));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id==R.id.toggleFavorite) {
+
+            movie.isFavorite = !movie.isFavorite;
+
+            updateFavorite(item);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

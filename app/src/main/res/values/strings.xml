@@ -5,4 +5,7 @@
     <string name="topMostPopular">Most Popular</string>
     <string name="topHighestRated">Highest Rated</string>
 
+    <string name="addToFavorites">add to favorites</string>
+    <string name="removeFromFavorites">remove from favorites</string>
+
 </resources>

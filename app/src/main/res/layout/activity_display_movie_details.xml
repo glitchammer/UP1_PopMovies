@@ -1,73 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="es.glitch.and.bugs.popmovies.ScrollingActivity">
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="false"
-    android:orientation="vertical"
-    android:padding="@dimen/padding_default">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="es.glitch.and.bugs.popmovies.DisplayMovieDetailsActivity">
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-
-        <ImageView
-            android:id="@+id/imgMoviePoster"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:transitionName="moviePoster"
-            />
-
-        <ImageView
-            android:id="@+id/imgAddFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_default"
-            android:text="Movie Title"
-            android:textAppearance="@android:style/TextAppearance.Large" />
-
-        <LinearLayout
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <!-- CONTENT -->
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="40dp"
+            tools:context="es.glitch.and.bugs.popmovies.DisplayMovieDetailsActivity">
+
+
+            <ImageView
+                android:id="@+id/imgMoviePoster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:transitionName="moviePoster"
+                android:layout_gravity="left"
+                />
 
             <TextView
-                android:id="@+id/txtRating"
+                android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="rating"
-                android:textAlignment="center" />
+                android:text="Movie Title"
+                android:textAppearance="@android:style/TextAppearance.Large" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtRating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="rating"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txtReleaseDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="release date"
+                    android:textAlignment="center" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/txtReleaseDate"
+                android:id="@+id/txtSynopsis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:text="synopsis"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
 
-                android:text="release date"
-                android:textAlignment="center" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtSynopsis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_default"
-            android:text="synopsis"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+    </android.support.v4.widget.NestedScrollView>
 
-    </LinearLayout>
 
-</ScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
+
