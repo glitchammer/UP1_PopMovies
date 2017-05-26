@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:adjustViewBounds="true" />
+        android:transitionName="moviePoster"
+        android:adjustViewBounds="true"
+        />
 
 </FrameLayout>

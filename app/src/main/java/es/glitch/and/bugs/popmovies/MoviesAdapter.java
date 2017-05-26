@@ -173,9 +173,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
             imgMovie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent displayMovieDetails = new Intent(mainActivity, DisplayMovieDetailsActivity.class);
-                    displayMovieDetails.putExtra("id", movie.id);
-                    mainActivity.startActivity(displayMovieDetails);
+                    mainActivity.onMovieItemSelected(imgMovie, movie);
                 }
             });
 

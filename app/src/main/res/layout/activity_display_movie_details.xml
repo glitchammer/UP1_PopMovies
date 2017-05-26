@@ -20,7 +20,8 @@
             android:id="@+id/imgMoviePoster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@mipmap/ic_launcher" />
+            android:transitionName="moviePoster"
+            />
 
         <ImageView
             android:id="@+id/imgAddFavorite"
