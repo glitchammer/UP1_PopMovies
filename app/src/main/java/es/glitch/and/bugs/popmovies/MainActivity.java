@@ -25,12 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
-    /**
-     * please declare your own theMovieDB.org API key in your local gradle.properties file as
-     * THE_MOVIE_DB_API_KEY="<your key>"
-     * This concept was derived from http://stackoverflow.com/questions/33134031/is-there-a-safe-way-to-manage-api-keys/34021467#34021467
-     */
-    public static final String API_KEY = BuildConfig.THE_MOVIE_DB_API_KEY;
 
     private static final String MOVIE_KEY = "CURRENT_LIST_OF_MOVIES";
 
@@ -47,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         Timber.plant(new Timber.DebugTree());
         Timber.i("timber initialized. first log statement.");
 
-        TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY, this);
+//        TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY, this);
+        TheMovieDBClient movieDBClient = new TheMovieDBClient();
 
         moviesAdapter = new MoviesAdapter(movieDBClient, this);
         if (savedInstanceState != null) {

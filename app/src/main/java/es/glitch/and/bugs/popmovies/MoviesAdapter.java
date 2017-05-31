@@ -189,4 +189,5 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
         }
     }
 
+
 }

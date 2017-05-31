@@ -17,6 +17,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by dnlbh on 31/03/2017.
  */
@@ -27,17 +29,20 @@ public class TheMovieDBClient {
 
     public static final String MOST_POPULAR  = "/movie/popular";
     public static final String HIGHEST_RATED = "/movie/top_rated";
-    private final Context context;
+
+    public static final String PATH_REVIEWS  = "/movie/%d/reviews";
+    public static final String PATH_TRAILERS = "/movie/%d/videos";
 
 
-    private String BASE_URI = "https://api.themoviedb.org/3";
+    private static final String BASE_URI = "https://api.themoviedb.org/3";
 
-    private String API_KEY;
+    /**
+     * please declare your own theMovieDB.org API key in your local gradle.properties file as
+     * THE_MOVIE_DB_API_KEY="<your key>"
+     * This concept was derived from http://stackoverflow.com/questions/33134031/is-there-a-safe-way-to-manage-api-keys/34021467#34021467
+     */
+    public static final String API_KEY = BuildConfig.THE_MOVIE_DB_API_KEY;
 
-    public TheMovieDBClient(String API_KEY, Context context) {
-        this.API_KEY = API_KEY;
-        this.context = context;
-    }
 
 
     public List<Movie> getTopMovies(String modePath, int pageIndex) throws IOException {
@@ -58,8 +63,8 @@ public class TheMovieDBClient {
         }
 
         // check internet connection first
-        //TODO for some reason this isOnline() method returns wrong results - even though it's supposed to be right practice, no?
-        if (!Utilities.isOnline(context)) throw new IOException("No internet connection");
+//        //TODO for some reason this isOnline() method returns wrong results - even though it's supposed to be right practice, no?
+//        if (!Utilities.isOnline(context)) throw new IOException("No internet connection");
 
         //
         // read from the db - make that webservice call
@@ -99,5 +104,64 @@ public class TheMovieDBClient {
         return movies;
     }
 
+    public static List<Review> loadReviews(long movieId) throws IOException {
+
+        // build up query URI
+        Uri prepareURI = Uri.parse(BASE_URI + String.format(PATH_REVIEWS, movieId)).buildUpon()
+                .appendQueryParameter("api_key", API_KEY)
+                .build();
+
+
+        // we need to make it a locator, a URL
+        URL url = null;
+        try {
+            url = new URL(prepareURI.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        // check internet connection first
+//        //TODO for some reason this isOnline() method returns wrong results - even though it's supposed to be right practice, no?
+//        if (!Utilities.isOnline(context)) throw new IOException("No internet connection");
+
+        //
+        // read from the db - make that webservice call
+        //
+        String reviewsJsonStr = IOUtils.toString(url.openStream());
+
+        Timber.i("Reviews:\n"+reviewsJsonStr);
+
+        return null;
+    }
+
+    public static List<Trailer> loadTrailers(long movieId) throws IOException {
+
+        // build up query URI
+        Uri prepareURI = Uri.parse(BASE_URI + String.format(PATH_TRAILERS, movieId)).buildUpon()
+                .appendQueryParameter("api_key", API_KEY)
+                .build();
+
+
+        // we need to make it a locator, a URL
+        URL url = null;
+        try {
+            url = new URL(prepareURI.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        // check internet connection first
+//        //TODO for some reason this isOnline() method returns wrong results - even though it's supposed to be right practice, no?
+//        if (!Utilities.isOnline(context)) throw new IOException("No internet connection");
+
+        //
+        // read from the db - make that webservice call
+        //
+        String trailersJsonStr = IOUtils.toString(url.openStream());
+
+        Timber.i("Trailers:\n"+trailersJsonStr);
+
+        return null;
+    }
 
 }
