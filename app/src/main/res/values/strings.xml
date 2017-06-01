@@ -7,5 +7,6 @@
 
     <string name="addToFavorites">add to favorites</string>
     <string name="removeFromFavorites">remove from favorites</string>
+    <string name="header_reviews">Reviews</string>
 
 </resources>

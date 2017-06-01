@@ -211,8 +211,7 @@ public class TheMovieDBClient {
             Log.wtf(TAG, "should never happen", e);
         }
 
-
-        return null;
+        return trailers;
     }
 
 }

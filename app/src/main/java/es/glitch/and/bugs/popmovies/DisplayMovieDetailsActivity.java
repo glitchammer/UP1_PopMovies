@@ -11,9 +11,12 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,8 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.txtReleaseDate) TextView txtReleaseDate;
     @BindView(R.id.txtRating) TextView txtRating;
     @BindView(R.id.txtSynopsis) TextView txtSynopsis;
+
+    @BindView(R.id.containerReviews) LinearLayout containerReviews;
 
     private Movie movie;
 
@@ -190,6 +195,30 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<List<? extends Object>> loader, List<? extends Object> data) {
+
+        int loaderId = loader.getId();
+
+        if (loaderId==LOADER_REVIEWS) {
+
+            for (Review review: ((List<Review>) data)) {
+
+                View view = LayoutInflater.from(this).inflate(R.layout.review, containerReviews, false);
+
+                TextView txtAuthorName = (TextView) view.findViewById(R.id.txtAuthorName);
+                TextView txtReview     = (TextView) view.findViewById(R.id.txtReview);
+
+                txtAuthorName.setText(review.author);
+                txtReview.setText(review.content);
+
+                containerReviews.addView(view);
+            }
+
+            containerReviews.getRootView().invalidate();
+
+        }
+        else if (loaderId==LOADER_TRAILERS) {
+
+        }
 
     }
 
