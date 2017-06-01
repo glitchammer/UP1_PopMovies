@@ -5,4 +5,14 @@ package es.glitch.and.bugs.popmovies;
  */
 
 public class Trailer {
+
+    private final String id;
+    public String name;
+    public String key;
+    public String site;
+    public String type;
+
+    public Trailer(String id) {
+        this.id = id;
+    }
 }

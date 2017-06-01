@@ -1,9 +1,10 @@
 package es.glitch.and.bugs.popmovies;
 
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -16,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,18 +39,32 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout appBarLayout;
 
-    @BindView(R.id.imgMoviePoster)
-    ImageView imgMoviePoster;
-    @BindView(R.id.txtTitle)
-    TextView txtTitle;
-    @BindView(R.id.txtReleaseDate)
-    TextView txtReleaseDate;
-    @BindView(R.id.txtRating)
-    TextView txtRating;
-    @BindView(R.id.txtSynopsis)
-    TextView txtSynopsis;
+    @BindView(R.id.ivBackdrop) ImageView ivBackdrop;
+    @BindView(R.id.ivMoviePoster) ImageView ivMoviePoster;
+    @BindView(R.id.txtTitle) TextView txtTitle;
+    @BindView(R.id.txtReleaseDate) TextView txtReleaseDate;
+    @BindView(R.id.txtRating) TextView txtRating;
+    @BindView(R.id.txtSynopsis) TextView txtSynopsis;
 
     private Movie movie;
+
+//    // picasso needs a strong reference for the target
+//    private Target mTargetBackdropHandler = new Target() {
+//        @Override
+//        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+//            appBarLayout.setBackground(new BitmapDrawable(getResources(), bitmap));
+//        }
+//
+//        @Override
+//        public void onBitmapFailed(Drawable errorDrawable) {
+//            Timber.w("onBitmapFailed");
+//        }
+//
+//        @Override
+//        public void onPrepareLoad(Drawable placeHolderDrawable) {
+//            Timber.d("onPrepareLoad: "+movie.backdropUrl);
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +89,16 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
                 .load(movie.posterUrl)
                 .placeholder(R.drawable.poster_placeholder)
                 .error(R.drawable.poster_missing)
-                .into(imgMoviePoster, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        appBarLayout.setBackground(imgMoviePoster.getDrawable());
-                    }
+                .into(ivMoviePoster);
 
-                    @Override
-                    public void onError() {
-                        // ignore
-                    }
-                });
-//        imgMoviePoster.setImageBitmap(ImageUtils.getImage(movie.imgDataThumbnail));
+        Picasso.with(this)
+                .load(movie.backdropUrl)
+                .placeholder(R.drawable.poster_placeholder)
+                .error(R.drawable.poster_missing)
+                .into(ivBackdrop);
+
+
+//        ivMoviePoster.setImageBitmap(ImageUtils.getImage(movie.imgDataThumbnail));
 
         toolbar.setTitle(movie.title);
 //        toolbar.setBackground();

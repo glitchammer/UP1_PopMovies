@@ -25,10 +25,12 @@ public class Movie implements Parcelable {
 
     public String thumbnailUrl;
     public String posterUrl;
+    public String backdropUrl;
 
     protected boolean isFavorite = false;
     public byte[] imgDataThumbnail;
     public byte[] imgDataPoster;
+    public byte[] imgDataBackdrop;
 
     public Movie(long id) {
         this.id = id;
@@ -49,6 +51,7 @@ public class Movie implements Parcelable {
         out.writeInt(voteCount);
         out.writeString(thumbnailUrl);
         out.writeString(posterUrl);
+        out.writeString(backdropUrl);
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
@@ -69,6 +72,7 @@ public class Movie implements Parcelable {
         voteCount = in.readInt();
         thumbnailUrl = in.readString();
         posterUrl = in.readString();
+        backdropUrl = in.readString();
     }
 
 }

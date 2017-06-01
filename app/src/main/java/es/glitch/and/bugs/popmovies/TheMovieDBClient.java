@@ -92,6 +92,7 @@ public class TheMovieDBClient {
                 movie.voteCount     = json.getInt("vote_count");
                 movie.thumbnailUrl  = "http://image.tmdb.org/t/p/w500" + json.getString("poster_path");
                 movie.posterUrl     = "http://image.tmdb.org/t/p/w500" + json.getString("poster_path");
+                movie.backdropUrl   = "http://image.tmdb.org/t/p/w780" + json.getString("poster_path");
 
                 movies.add(movie);
             }
@@ -129,9 +130,33 @@ public class TheMovieDBClient {
         //
         String reviewsJsonStr = IOUtils.toString(url.openStream());
 
-        Timber.i("Reviews:\n"+reviewsJsonStr);
+        // init result list
+        List<Review> reviews = new ArrayList<Review>();
 
-        return null;
+        // parse json
+        try {
+            JSONObject pageOne = new JSONObject(reviewsJsonStr);
+            JSONArray results = pageOne.getJSONArray("results");
+
+            Log.d(TAG, "no of results: " +results.length() );
+
+            for (int i=0; i<results.length(); i++) {
+                JSONObject json = results.getJSONObject(i);
+
+                Review review = new Review(json.getString("id"));
+                review.author  = json.getString("author");
+                review.content = json.getString("content");
+                review.url     = json.getString("url");
+
+                reviews.add(review);
+            }
+
+
+        } catch (JSONException e) {
+            Log.wtf(TAG, "should never happen", e);
+        }
+
+        return reviews;
     }
 
     public static List<Trailer> loadTrailers(long movieId) throws IOException {
@@ -159,7 +184,33 @@ public class TheMovieDBClient {
         //
         String trailersJsonStr = IOUtils.toString(url.openStream());
 
-        Timber.i("Trailers:\n"+trailersJsonStr);
+        // init result list
+        List<Trailer> trailers = new ArrayList<Trailer>();
+
+        // parse json
+        try {
+            JSONObject pageOne = new JSONObject(trailersJsonStr);
+            JSONArray results = pageOne.getJSONArray("results");
+
+            Log.d(TAG, "no of results: " +results.length() );
+
+            for (int i=0; i<results.length(); i++) {
+                JSONObject json = results.getJSONObject(i);
+
+                Trailer trailer = new Trailer(json.getString("id"));
+                trailer.name     = json.getString("name");
+                trailer.key      = json.getString("key");
+                trailer.site     = json.getString("site");
+                trailer.type     = json.getString("type");
+
+                trailers.add(trailer);
+            }
+
+
+        } catch (JSONException e) {
+            Log.wtf(TAG, "should never happen", e);
+        }
+
 
         return null;
     }
