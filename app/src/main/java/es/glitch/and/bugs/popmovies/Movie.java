@@ -1,5 +1,6 @@
 package es.glitch.and.bugs.popmovies;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -31,6 +32,7 @@ public class Movie implements Parcelable {
     public byte[] imgDataThumbnail;
     public byte[] imgDataPoster;
     public byte[] imgDataBackdrop;
+    public Uri uri;
 
     public Movie(long id) {
         this.id = id;

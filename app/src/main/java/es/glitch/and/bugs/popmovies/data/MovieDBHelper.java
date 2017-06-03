@@ -13,7 +13,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "movies.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     public MovieDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,8 +33,9 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 MoviesEntry.COLUMN_RELEASE_DATE  + " TIMESTAMP, " +
                 MoviesEntry.COLUMN_VOTE_AVG      + " REAL, " +
                 MoviesEntry.COLUMN_VOTE_CNT      + " INTEGER , " +
-                MoviesEntry.COLUMN_THUMBNAIL     + " BLOB, " +
-                MoviesEntry.COLUMN_POSTER        + " BLOB" +
+                MoviesEntry.COLUMN_THUMBNAIL     + " TEXT, " +
+                MoviesEntry.COLUMN_POSTER        + " TEXT," +
+                MoviesEntry.COLUMN_BACKDROP      + " TEXT" +
                 "); ";
 
         // COMPLETED (7) Execute the query by calling execSQL on sqLiteDatabase and pass the string query SQL_CREATE_WAITLIST_TABLE

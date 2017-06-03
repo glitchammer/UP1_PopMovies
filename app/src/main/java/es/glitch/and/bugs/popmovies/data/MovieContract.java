@@ -29,6 +29,11 @@ public class MovieContract {
         public static final String COLUMN_VOTE_CNT      = "voteCnt";
         public static final String COLUMN_THUMBNAIL     = "thumbnail";
         public static final String COLUMN_POSTER        = "poster";
+        public static final String COLUMN_BACKDROP      = "backdrop";
+
+        public static Uri buildMovieUri(long movieId) {
+            return CONTENT_URI.buildUpon().appendPath(Long.toString(movieId)).build();
+        }
 
     }
 

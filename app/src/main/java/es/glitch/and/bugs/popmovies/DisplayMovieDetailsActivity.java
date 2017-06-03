@@ -1,6 +1,8 @@
 package es.glitch.and.bugs.popmovies;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -28,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.glitch.and.bugs.popmovies.data.MovieContract;
 import timber.log.Timber;
 
 public class DisplayMovieDetailsActivity extends AppCompatActivity implements
@@ -85,6 +88,7 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
 
         long movieID = intent.getExtras().getLong("id");
         movie = Movie.MOVIES_CACHE.get(movieID);
+        movie.uri = MovieContract.MoviesEntry.buildMovieUri(movie.id);
 
         // bind ui resources
         ButterKnife.bind(this);
@@ -121,6 +125,19 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
     }
 
     private void updateFavorite(MenuItem item) {
+
+        Cursor cursor = getContentResolver().query(
+                movie.uri,
+                null,
+                null,
+                null,
+                null
+        );
+
+        Timber.i("check favorite: "+movie.id);
+
+        movie.isFavorite = (cursor!=null && cursor.moveToFirst());
+
         int img = movie.isFavorite ? R.drawable.ic_favorite_white_24dp : R.drawable.ic_favorite_border_white_24dp;
         item.setIcon(img);
     }
@@ -146,7 +163,31 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
 
         if (id == R.id.toggleFavorite) {
 
-            movie.isFavorite = !movie.isFavorite;
+            if (movie.isFavorite) {
+                getContentResolver().delete(
+                        movie.uri,
+                        MovieContract.MoviesEntry._ID + "=?",
+                        new String[]{""+movie.id}
+                );
+
+            } else {
+
+                ContentValues cv = new ContentValues();
+                cv.put(MovieContract.MoviesEntry._ID, movie.id);
+                cv.put(MovieContract.MoviesEntry.COLUMN_TITLE, movie.title);
+                cv.put(MovieContract.MoviesEntry.COLUMN_THUMBNAIL, movie.thumbnailUrl);
+                cv.put(MovieContract.MoviesEntry.COLUMN_POSTER, movie.posterUrl);
+                cv.put(MovieContract.MoviesEntry.COLUMN_BACKDROP, movie.backdropUrl);
+                cv.put(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE, movie.releaseDate);
+                cv.put(MovieContract.MoviesEntry.COLUMN_PLOT_SYNOPSIS, movie.plotSynopsis);
+                cv.put(MovieContract.MoviesEntry.COLUMN_VOTE_CNT, movie.voteCount);
+                cv.put(MovieContract.MoviesEntry.COLUMN_VOTE_AVG, movie.voteAvg);
+
+                getContentResolver().insert(
+                        movie.uri,
+                        cv
+                );
+            }
 
             updateFavorite(item);
 

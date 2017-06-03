@@ -2,7 +2,7 @@ package es.glitch.and.bugs.popmovies;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +18,9 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import es.glitch.and.bugs.popmovies.data.MovieContract;
+import timber.log.Timber;
 
 /**
  * Created by dnlbh on 19/03/2017.
@@ -40,7 +43,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     public MoviesAdapter(TheMovieDBClient movieDBClient, MainActivity mainActivity) {
         this.movieDBClient = movieDBClient;
-        this.mainActivity  = mainActivity;
+        this.mainActivity = mainActivity;
     }
 
     public void loadMoviesMostPopular() {
@@ -57,7 +60,47 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
         new LoadMoviesTask().execute(mode, String.valueOf(pageIndex));
     }
 
+    public void loadMoviesFavorites() {
+
+        mode=null;
+        List<Movie> listMovies = new ArrayList<Movie>();
+        setMovies(listMovies);
+
+        Cursor cursor = mainActivity.getContentResolver().query(
+                MovieContract.MoviesEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        for (int i=0; i<cursor.getCount(); i++) {
+
+            cursor.moveToPosition(i);
+
+            Movie movie = new Movie(cursor.getLong(cursor.getColumnIndex(MovieContract.MoviesEntry._ID)));
+
+            movie.title        = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_TITLE));
+            movie.thumbnailUrl = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_THUMBNAIL));
+            movie.posterUrl    = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_POSTER));
+            movie.backdropUrl  = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_BACKDROP));
+            movie.releaseDate  = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE));
+            movie.plotSynopsis = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_PLOT_SYNOPSIS));
+            movie.voteCount    = cursor.getInt(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_VOTE_CNT));
+            movie.voteAvg      = cursor.getDouble(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_VOTE_AVG));
+
+            listMovies.add(movie);
+
+        }
+
+        setMovies(listMovies);
+        setLoading(false);
+
+    }
+
+
     public void loadMoreMovies() {
+        if (mode==null) return;
         setLoading(true);
         pageIndex++;
         new LoadMoviesTask().execute(mode, String.valueOf(pageIndex));

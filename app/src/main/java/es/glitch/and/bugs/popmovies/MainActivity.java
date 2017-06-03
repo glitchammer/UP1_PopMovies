@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Parcelable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,11 +15,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.Toast;
+
+import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private MoviesAdapter moviesAdapter;
     private GridLayoutManager layoutManager;
 
+    @BindView(R.id.rv_movies) RecyclerView rvMovies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,43 @@ public class MainActivity extends AppCompatActivity {
         // init timber
         Timber.plant(new Timber.DebugTree());
         Timber.i("timber initialized. first log statement.");
+
+        // stetho
+        Stetho.Initializer initStetho = Stetho.newInitializerBuilder(this)
+                .enableDumpapp(
+                        Stetho.defaultDumperPluginsProvider(this))
+                .enableWebKitInspector(
+                        Stetho.defaultInspectorModulesProvider(this))
+                .build();
+        Stetho.initialize(initStetho);
+
+        ButterKnife.bind(this);
+
+//        TabHost.TabContentFactory tcf = new TabHost.TabContentFactory(){
+//            @Override
+//            public View createTabContent(String tag) {
+//                return rvMovies;
+//            }
+//        };
+//
+//        TabHost.TabSpec tabSpecMostPopular  = tabHost.newTabSpec("mostPopular").setIndicator("Most Popular").setContent(tcf);
+//        TabHost.TabSpec tabSpecHighestRated = tabHost.newTabSpec("highestRated").setIndicator("Highest Rated").setContent(tcf);
+//        TabHost.TabSpec tabSpecFavorites    = tabHost.newTabSpec("favorites").setIndicator("Favorites").setContent(tcf);
+//
+//        tabHost.setup();
+//
+//        tabHost.addTab(tabSpecMostPopular);
+//        tabHost.addTab(tabSpecHighestRated);
+//        tabHost.addTab(tabSpecFavorites);
+//
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+//
+//        // Adding Tabs
+//        for (String tab_name : tabs) {
+//            actionBar.addTab(actionBar.newTab().setText(tab_name)
+//                    .setTabListener(this));
+//        }
 
 //        TheMovieDBClient movieDBClient = new TheMovieDBClient(API_KEY, this);
         TheMovieDBClient movieDBClient = new TheMovieDBClient();
@@ -52,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             moviesAdapter.loadMoviesMostPopular();
         }
 
-        RecyclerView rvMovies = (RecyclerView) findViewById(R.id.rv_movies);
+
         layoutManager = new GridLayoutManager(this, 3);
         rvMovies.setLayoutManager(layoutManager);
         rvMovies.setAdapter(moviesAdapter);
@@ -71,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
 
                 totalItemCount = layoutManager.getItemCount();
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+
                 if (totalItemCount <= (lastVisibleItem + visibleThreshold)) {
 
-
                     Timber.d("load more.... (dx,dy): (" + dx + "," + dy + ")");
-                    Toast.makeText(MainActivity.this, "Load more....", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Load more....", Toast.LENGTH_SHORT).show();
                     moviesAdapter.loadMoreMovies();
 
                 }
@@ -94,18 +138,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemThatWasClickedId = item.getItemId();
-        if (itemThatWasClickedId == R.id.action_topMostPopular) {
-            Context context = MainActivity.this;
-            String textToShow = "Load most popular movies";
-            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+
+        int itemId = item.getItemId();
+        Context context = MainActivity.this;
+
+        if (itemId == R.id.action_topMostPopular) {
+            Toast.makeText(context, "Load most popular movies", Toast.LENGTH_SHORT).show();
             moviesAdapter.loadMoviesMostPopular();
             return true;
-        } else if (itemThatWasClickedId == R.id.action_topHighestRated) {
-            Context context = MainActivity.this;
-            String textToShow = "Load highest rated movies";
-            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+        } else if (itemId == R.id.action_topHighestRated) {
+            Toast.makeText(context, "Load highest rated movies", Toast.LENGTH_SHORT).show();
             moviesAdapter.loadMoviesHighestRated();
+            return true;
+        } else if (itemId == R.id.action_favorites) {
+            Toast.makeText(context, "Load favorite movies", Toast.LENGTH_SHORT).show();
+            moviesAdapter.loadMoviesFavorites();
             return true;
         }
         return super.onOptionsItemSelected(item);

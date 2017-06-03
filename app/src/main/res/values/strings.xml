@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Pop Movies</string>
 
+    <!-- MainActivity Menu -->
     <string name="settings">Settings</string>
     <string name="topMostPopular">Most Popular</string>
     <string name="topHighestRated">Highest Rated</string>
+    <string name="favorites">My Favorites</string>
 
+    <!-- DisplayMovieDetailsActivity -->
     <string name="addToFavorites">add to favorites</string>
     <string name="removeFromFavorites">remove from favorites</string>
     <string name="header_reviews">Reviews</string>
