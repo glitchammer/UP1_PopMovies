@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,9 +30,12 @@ import timber.log.Timber;
  * Created by dnlbh on 19/03/2017.
  */
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumbnailVH> {
+public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumbnailVH> implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = MoviesAdapter.class.getName();
+
+    private static final int LOADER_FAVORITES = 10;
 
     private final MainActivity mainActivity;
     private TheMovieDBClient movieDBClient;
@@ -64,39 +71,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     public void loadMoviesFavorites() {
 
-        mode=null;
-        List<Movie> listMovies = new ArrayList<Movie>();
-        setMovies(listMovies);
-
-        Cursor cursor = mainActivity.getContentResolver().query(
-                MovieContract.MoviesEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
-
-        for (int i=0; i<cursor.getCount(); i++) {
-
-            cursor.moveToPosition(i);
-
-            Movie movie = new Movie(cursor.getLong(cursor.getColumnIndex(MovieContract.MoviesEntry._ID)));
-
-            movie.title        = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_TITLE));
-            movie.thumbnailUrl = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_THUMBNAIL));
-            movie.posterUrl    = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_POSTER));
-            movie.backdropUrl  = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_BACKDROP));
-            movie.releaseDate  = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE));
-            movie.plotSynopsis = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_PLOT_SYNOPSIS));
-            movie.voteCount    = cursor.getInt(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_VOTE_CNT));
-            movie.voteAvg      = cursor.getDouble(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_VOTE_AVG));
-
-            listMovies.add(movie);
-
-        }
-
-        setMovies(listMovies);
         setLoading(false);
+        mode=null;
+        setMovies(new ArrayList<Movie>());
+
+        mainActivity.getSupportLoaderManager().initLoader(LOADER_FAVORITES, null, this).forceLoad();
 
     }
 
@@ -153,6 +132,52 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     public String getMode() {
         return mode;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(
+                mainActivity,
+                MovieContract.MoviesEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+                );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        List<Movie> listMovies = new ArrayList<Movie>();
+
+        for (int i=0; i<cursor.getCount(); i++) {
+
+            cursor.moveToPosition(i);
+
+            Movie movie = new Movie(cursor.getLong(cursor.getColumnIndex(MovieContract.MoviesEntry._ID)));
+
+            movie.title        = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_TITLE));
+            movie.thumbnailUrl = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_THUMBNAIL));
+            movie.posterUrl    = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_POSTER));
+            movie.backdropUrl  = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_BACKDROP));
+            movie.releaseDate  = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE));
+            movie.plotSynopsis = cursor.getString(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_PLOT_SYNOPSIS));
+            movie.voteCount    = cursor.getInt(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_VOTE_CNT));
+            movie.voteAvg      = cursor.getDouble(cursor.getColumnIndex(MovieContract.MoviesEntry.COLUMN_VOTE_AVG));
+
+            listMovies.add(movie);
+
+        }
+
+        setMovies(listMovies);
+        setLoading(false);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // not to be implemented
     }
 
     public class LoadMoviesTask extends AsyncTask<String, Void, List<Movie>> {
