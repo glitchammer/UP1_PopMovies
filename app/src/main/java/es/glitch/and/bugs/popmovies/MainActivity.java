@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Parcelable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -174,6 +175,17 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent displayMovieDetails = new Intent(this, ScrollingActivity.class);
 //        startActivity(displayMovieDetails);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // scenario: user looks at her favorite movies, selects one of them (DisplayMovieDetailsActivity), removes it from favorites and clicks back button.
+        //           in this case, the movie is still there until some "refresh" happens. so we need to revalidate the movies adapter
+
+        moviesAdapter.revalidate();
 
     }
 }

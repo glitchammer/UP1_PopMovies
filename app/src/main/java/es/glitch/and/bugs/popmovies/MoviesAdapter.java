@@ -126,6 +126,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
         this.isLoading = isLoading;
     }
 
+    public void revalidate() {
+
+        // scenario: user looks at her favorite movies, selects one of them (DisplayMovieDetailsActivity), removes it from favorites and clicks back button.
+        //           in this case, the movie is still there until some "refresh" happens. so we need to revalidate the movies adapter
+        if (mode==null) {
+            // favorite movies are showing from contentprovider db.
+            // reload
+            loadMoviesFavorites();
+        }
+
+    }
+
     public class LoadMoviesTask extends AsyncTask<String, Void, List<Movie>> {
 
         private boolean exceptionOccurred = false;
