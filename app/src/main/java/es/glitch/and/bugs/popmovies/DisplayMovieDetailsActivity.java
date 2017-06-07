@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -192,7 +193,7 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
                 @Override
                 public List<? extends Object> loadInBackground() {
                     long movieId = args.getLong("id");
-                    List<Review> reviews = null;
+                    List<Review> reviews = new ArrayList<Review>();
                     try {
                         reviews = TheMovieDBClient.loadReviews(movieId);
                     } catch (IOException e) {
@@ -207,7 +208,7 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
                 @Override
                 public List<? extends Object> loadInBackground() {
                     long movieId = args.getLong("id");
-                    List<Trailer> trailers = null;
+                    List<Trailer> trailers = new ArrayList<Trailer>();
                     try {
                         trailers = TheMovieDBClient.loadTrailers(movieId);
                     } catch (IOException e) {
