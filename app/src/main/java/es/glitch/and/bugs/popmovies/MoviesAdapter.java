@@ -118,14 +118,22 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
         return movies;
     }
 
+
+    private void setLoading(boolean isLoading) {
+        this.isLoading = isLoading;
+    }
+
+    /**
+     * @return true if movies are currently loading
+     */
     public boolean isLoading() {
         return isLoading;
     }
 
-    public void setLoading(boolean isLoading) {
-        this.isLoading = isLoading;
-    }
-
+    /**
+     * revalidate to make sure the list of movies is in sync with the actual data.
+     * Currently, only used for back navigation scenario after user returned from detail view. See scenario in the comments.
+     */
     public void revalidate() {
 
         // scenario: user looks at her favorite movies, selects one of them (DisplayMovieDetailsActivity), removes it from favorites and clicks back button.
