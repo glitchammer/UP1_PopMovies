@@ -3,6 +3,7 @@ package es.glitch.and.bugs.popmovies;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,6 +48,7 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.txtRating) TextView txtRating;
     @BindView(R.id.txtSynopsis) TextView txtSynopsis;
 
+    @BindView(R.id.containerTrailers) LinearLayout containerTrailers;
     @BindView(R.id.containerReviews) LinearLayout containerReviews;
 
     private Movie movie;
@@ -249,6 +252,33 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
 
         }
         else if (loaderId==LOADER_TRAILERS) {
+
+            for (final Trailer trailer: ((List<Trailer>) data)) {
+
+                View view = LayoutInflater.from(this).inflate(R.layout.trailer, containerTrailers, false);
+
+                ImageButton ibPlay = (ImageButton) view.findViewById(R.id.ibPlay);
+                TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+
+                txtTitle.setText(trailer.name);
+
+                ibPlay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        String urlYoutube = String.format("http://www.youtube.com/watch?v=%s", trailer.key);
+                        Timber.i("Play trailer, url = " + urlYoutube);
+                        startActivity(new Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(urlYoutube))
+                        );
+
+                    }
+                });
+
+                containerTrailers.addView(view);
+
+            }
 
         }
 
