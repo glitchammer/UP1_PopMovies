@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -40,6 +41,7 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
 
     @BindView(R.id.toolbar) Toolbar toolbar;
 
+    @BindView(R.id.app_bar) AppBarLayout appBarLayout;
     @BindView(R.id.collapsingToolbarLayout) CollapsingToolbarLayout collapsingToolbarLayout;
 
     @BindView(R.id.ivBackdrop) ImageView ivBackdrop;
@@ -53,23 +55,6 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
 
     private Movie movie;
 
-//    // picasso needs a strong reference for the target
-//    private Target mTargetBackdropHandler = new Target() {
-//        @Override
-//        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//            appBarLayout.setBackground(new BitmapDrawable(getResources(), bitmap));
-//        }
-//
-//        @Override
-//        public void onBitmapFailed(Drawable errorDrawable) {
-//            Timber.w("onBitmapFailed");
-//        }
-//
-//        @Override
-//        public void onPrepareLoad(Drawable placeHolderDrawable) {
-//            Timber.d("onPrepareLoad: "+movie.backdropUrl);
-//        }
-//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +75,7 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
         // bind ui resources
         ButterKnife.bind(this);
 
-//        // load ui content
-//        Picasso.with(this)
-//                .load(movie.posterUrl)
-//                .placeholder(R.drawable.poster_placeholder)
-//                .error(R.drawable.poster_missing)
-//                .into(ivMoviePoster);
-
+        // load ui
         Picasso.with(this)
                 .load(movie.backdropUrl)
                 .placeholder(R.drawable.poster_placeholder)
@@ -115,6 +94,21 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
         // load reviews
         getSupportLoaderManager().initLoader(LOADER_REVIEWS, intent.getExtras(), this).forceLoad();
         getSupportLoaderManager().initLoader(LOADER_TRAILERS, intent.getExtras(), this).forceLoad();
+
+        // todo: when toolbar collapsed, display title
+        // # does not work
+//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                Timber.i("onOffsetChanged "+verticalOffset);
+////                if (verticalOffset==0) {
+////                    getSupportActionBar().setTitle("onOffsetChanged " + verticalOffset);
+////                }
+////                else {
+////                    getSupportActionBar().setTitle("" + verticalOffset);
+////                }
+//            }
+//        });
 
     }
 
