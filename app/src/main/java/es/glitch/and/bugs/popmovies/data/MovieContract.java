@@ -24,9 +24,12 @@ public class MovieContract {
 
         public static final String COLUMN_TITLE         = "title";
         public static final String COLUMN_RELEASE_DATE  = "releaseDate";
+
         public static final String COLUMN_PLOT_SYNOPSIS = "plotSynopsis";
+
         public static final String COLUMN_VOTE_AVG      = "voteAvg";
         public static final String COLUMN_VOTE_CNT      = "voteCnt";
+
         public static final String COLUMN_THUMBNAIL     = "thumbnail";
         public static final String COLUMN_POSTER        = "poster";
         public static final String COLUMN_BACKDROP      = "backdrop";

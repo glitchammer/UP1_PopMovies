@@ -75,27 +75,12 @@ public class MovieContentProvider extends ContentProvider {
 
                 String movieId = uri.getLastPathSegment();
 
-                /*
-                 * The query method accepts a string array of arguments, as there may be more
-                 * than one "?" in the selection statement. Even though in our case, we only have
-                 * one "?", we have to create a string array that only contains one element
-                 * because this method signature accepts a string array.
-                 */
                 String[] selectionArguments = new String[]{movieId};
 
                 cursor = movieDBHelper.getReadableDatabase().query(
 
                         MovieContract.MoviesEntry.TABLE_NAME,
                         projection,
-                        /*
-                         * The URI that matches CODE_WEATHER_WITH_DATE contains a date at the end
-                         * of it. We extract that date and use it with these next two lines to
-                         * specify the row of weather we want returned in the cursor. We use a
-                         * question mark here and then designate selectionArguments as the next
-                         * argument for performance reasons. Whatever Strings are contained
-                         * within the selectionArguments array will be inserted into the
-                         * selection statement by SQLite under the hood.
-                         */
                         MovieContract.MoviesEntry._ID + " = ? ",
                         selectionArguments,
                         null,
@@ -130,7 +115,7 @@ public class MovieContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        // TODO: Implement this to handle requests to update one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        // no use case in this project
+        throw new UnsupportedOperationException("Not yet implemented, no use case for this in the project.");
     }
 }

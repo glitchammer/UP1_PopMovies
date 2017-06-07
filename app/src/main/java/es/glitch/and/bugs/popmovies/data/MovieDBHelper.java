@@ -25,7 +25,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE " + MoviesEntry.TABLE_NAME + " (" +
 
-                // we can re-use the existing primary key from theMovieDB.org
+                // id: we can re-use the existing primary key from theMovieDB.org
                 MoviesEntry._ID                  + " INTEGER PRIMARY KEY," +
 
                 MoviesEntry.COLUMN_TITLE         + " TEXT NOT NULL, " +
@@ -38,7 +38,6 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 MoviesEntry.COLUMN_BACKDROP      + " TEXT" +
                 "); ";
 
-        // COMPLETED (7) Execute the query by calling execSQL on sqLiteDatabase and pass the string query SQL_CREATE_WAITLIST_TABLE
         db.execSQL(SQL_CREATE_MOVIES_TABLE);
     }
 
