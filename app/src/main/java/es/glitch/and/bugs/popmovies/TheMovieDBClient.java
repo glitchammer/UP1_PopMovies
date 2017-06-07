@@ -62,6 +62,8 @@ public class TheMovieDBClient {
             e.printStackTrace();
         }
 
+        Timber.i("request movies URL: " + url);
+
         // check internet connection first
 //        //TODO for some reason this isOnline() method returns wrong results - even though it's supposed to be right practice, no?
 //        if (!Utilities.isOnline(context)) throw new IOException("No internet connection");
@@ -79,7 +81,7 @@ public class TheMovieDBClient {
             JSONObject pageOne = new JSONObject(searchResultsStr);
             JSONArray results = pageOne.getJSONArray("results");
 
-            Log.d(TAG, "no of results: " +results.length() );
+            Timber.d("no of results: " +results.length() );
 
             for (int i=0; i<results.length(); i++) {
                 JSONObject json = results.getJSONObject(i);

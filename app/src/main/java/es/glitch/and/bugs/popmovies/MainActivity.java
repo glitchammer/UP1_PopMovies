@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             moviesAdapter.setMovies(listOfMovies);
             moviesAdapter.setMode(savedInstanceState.getString(CURRENT_MODE));
         } else {
+            getSupportActionBar().setTitle(getResources().getString(R.string.app_name) + " - Most Popular");
             moviesAdapter.loadMoviesMostPopular();
         }
 
@@ -141,14 +142,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (itemId == R.id.action_topMostPopular) {
             Toast.makeText(context, "Load most popular movies", Toast.LENGTH_SHORT).show();
+            getSupportActionBar().setTitle(getResources().getString(R.string.app_name) + " - Most Popular");
             moviesAdapter.loadMoviesMostPopular();
             return true;
         } else if (itemId == R.id.action_topHighestRated) {
             Toast.makeText(context, "Load highest rated movies", Toast.LENGTH_SHORT).show();
+            getSupportActionBar().setTitle(getResources().getString(R.string.app_name) + " - Highest Rated");
             moviesAdapter.loadMoviesHighestRated();
             return true;
         } else if (itemId == R.id.action_favorites) {
             Toast.makeText(context, "Load favorite movies", Toast.LENGTH_SHORT).show();
+            getSupportActionBar().setTitle(getResources().getString(R.string.app_name) + " - My Favorites");
             moviesAdapter.loadMoviesFavorites();
             return true;
         }

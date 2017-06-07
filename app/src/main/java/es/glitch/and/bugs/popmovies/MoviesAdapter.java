@@ -48,6 +48,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     public void loadMoviesMostPopular() {
         setLoading(true);
+        pageIndex = 1;
         setMovies(new ArrayList<Movie>());
         mode = TheMovieDBClient.MOST_POPULAR;
         new LoadMoviesTask().execute(mode, String.valueOf(pageIndex));
@@ -55,6 +56,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     public void loadMoviesHighestRated() {
         setLoading(true);
+        pageIndex = 1;
         setMovies(new ArrayList<Movie>());
         mode = TheMovieDBClient.HIGHEST_RATED;
         new LoadMoviesTask().execute(mode, String.valueOf(pageIndex));
@@ -110,7 +112,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
-        this.pageIndex = 1;
         notifyDataSetChanged();
     }
 
@@ -157,6 +158,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
     public class LoadMoviesTask extends AsyncTask<String, Void, List<Movie>> {
 
         private boolean exceptionOccurred = false;
+        private String mode;
 
         @Override
         protected List<Movie> doInBackground(String... params) {
