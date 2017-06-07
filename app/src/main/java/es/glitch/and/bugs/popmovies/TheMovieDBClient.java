@@ -92,7 +92,7 @@ public class TheMovieDBClient {
                 movie.voteCount     = json.getInt("vote_count");
                 movie.thumbnailUrl  = "http://image.tmdb.org/t/p/w500" + json.getString("poster_path");
                 movie.posterUrl     = "http://image.tmdb.org/t/p/w500" + json.getString("poster_path");
-                movie.backdropUrl   = "http://image.tmdb.org/t/p/w780" + json.getString("poster_path");
+                movie.backdropUrl   = "http://image.tmdb.org/t/p/w1280" + json.getString("poster_path");
 
                 movies.add(movie);
             }

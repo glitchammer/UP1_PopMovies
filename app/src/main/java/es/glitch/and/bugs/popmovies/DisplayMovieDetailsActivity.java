@@ -3,9 +3,6 @@ package es.glitch.and.bugs.popmovies;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -23,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,13 +36,11 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
     private static final int LOADER_REVIEWS = 10;
     private static final int LOADER_TRAILERS = 20;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.toolbar_layout)
-    CollapsingToolbarLayout appBarLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
+    @BindView(R.id.collapsingToolbarLayout) CollapsingToolbarLayout collapsingToolbarLayout;
 
     @BindView(R.id.ivBackdrop) ImageView ivBackdrop;
-    @BindView(R.id.ivMoviePoster) ImageView ivMoviePoster;
     @BindView(R.id.txtTitle) TextView txtTitle;
     @BindView(R.id.txtReleaseDate) TextView txtReleaseDate;
     @BindView(R.id.txtRating) TextView txtRating;
@@ -93,12 +87,12 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
         // bind ui resources
         ButterKnife.bind(this);
 
-        // load ui content
-        Picasso.with(this)
-                .load(movie.posterUrl)
-                .placeholder(R.drawable.poster_placeholder)
-                .error(R.drawable.poster_missing)
-                .into(ivMoviePoster);
+//        // load ui content
+//        Picasso.with(this)
+//                .load(movie.posterUrl)
+//                .placeholder(R.drawable.poster_placeholder)
+//                .error(R.drawable.poster_missing)
+//                .into(ivMoviePoster);
 
         Picasso.with(this)
                 .load(movie.backdropUrl)
@@ -107,10 +101,7 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity implements
                 .into(ivBackdrop);
 
 
-//        ivMoviePoster.setImageBitmap(ImageUtils.getImage(movie.imgDataThumbnail));
-
-        toolbar.setTitle(movie.title);
-//        toolbar.setBackground();
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         txtTitle.setText(movie.title);

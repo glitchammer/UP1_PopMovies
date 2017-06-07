@@ -146,6 +146,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieThumb
 
     }
 
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
     public class LoadMoviesTask extends AsyncTask<String, Void, List<Movie>> {
 
         private boolean exceptionOccurred = false;

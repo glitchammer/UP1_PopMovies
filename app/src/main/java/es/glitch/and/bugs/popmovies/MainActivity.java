@@ -2,21 +2,15 @@ package es.glitch.and.bugs.popmovies;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Parcelable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
@@ -33,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
 
 
-    private static final String MOVIE_KEY = "CURRENT_LIST_OF_MOVIES";
+    private static final String CURRENT_LIST_OF_MOVIES = "CURRENT_LIST_OF_MOVIES";
+    private static final String CURRENT_MODE = "MODE";
 
     private MoviesAdapter moviesAdapter;
     private GridLayoutManager layoutManager;
@@ -91,8 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         moviesAdapter = new MoviesAdapter(movieDBClient, this);
         if (savedInstanceState != null) {
-            List<Movie> listOfMovies = (List<Movie>) savedInstanceState.get(MOVIE_KEY);
+            List<Movie> listOfMovies = (List<Movie>) savedInstanceState.get(CURRENT_LIST_OF_MOVIES);
             moviesAdapter.setMovies(listOfMovies);
+            moviesAdapter.setMode(savedInstanceState.getString(CURRENT_MODE));
         } else {
             moviesAdapter.loadMoviesMostPopular();
         }
@@ -162,7 +158,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(MOVIE_KEY, (ArrayList<? extends Parcelable>) moviesAdapter.getMovies());
+        outState.putParcelableArrayList(CURRENT_LIST_OF_MOVIES, (ArrayList<? extends Parcelable>) moviesAdapter.getMovies());
+        outState.putString(CURRENT_MODE, moviesAdapter.getMode());
     }
 
     public void onMovieItemSelected(ImageView imgMovie, Movie movie) {
